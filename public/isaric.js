@@ -41,6 +41,8 @@ function maleCheck(){
     femaleSex.style.backgroundColor = 'lightgrey';
     femaleSex.style.color = 'black';
     getMortalityScore()
+	updateSpanText( $('#sexSpan1'), $('#maleSex').find('.scoreInputLabel')[0].innerText );
+	updateSpanText( $('#sexSpan2'), $('#maleSex').find('.scoreInputLabel')[0].innerText );
 }
 function maleUncheck(){
     sex = 0;
@@ -123,7 +125,8 @@ function ageless50check(){
     ageless50.style.color = 'white';
     ageless50.removeEventListener("click", ageless50check);
     ageless50.addEventListener("click", ageless50uncheck);
-    getMortalityScore()
+    getMortalityScore();
+	updateSpanText( $('#ageSpan'), $('#less50').find('.scoreInputLabel')[0].innerText );
 }
 function ageless50uncheck(){
     ageless50.addEventListener("click", ageless50check);
@@ -131,7 +134,7 @@ function ageless50uncheck(){
     ageless50.style.color = 'black';
     ageless50.removeEventListener("click", ageless50uncheck);
     ageless50.addEventListener("click", ageless50check);
-    getMortalityScore()
+    getMortalityScore();
 }
 
 age5059.addEventListener("click", age5059check);
@@ -142,7 +145,8 @@ function age5059check(){
     ageSum+=2;
     age5059.removeEventListener("click", age5059check);
     age5059.addEventListener("click", age5059uncheck);
-    getMortalityScore()
+    getMortalityScore();
+	updateSpanText( $('#ageSpan'), $('#age50-59').find('.scoreInputLabel')[0].innerText );
 }
 function age5059uncheck(){
     ageSum = 0;
@@ -151,7 +155,7 @@ function age5059uncheck(){
     age5059.style.color = 'black';
     age5059.removeEventListener("click", age5059uncheck);
     age5059.addEventListener("click", age5059check);
-    getMortalityScore()
+    getMortalityScore();
 }
 
 age6069.addEventListener("click", age6069check);
@@ -162,7 +166,8 @@ function age6069check(){
     ageSum+=4;
     age6069.removeEventListener("click", age6069check);
     age6069.addEventListener("click", age6069uncheck);
-    getMortalityScore()
+    getMortalityScore();
+	updateSpanText( $('#ageSpan'), $('#age60-69').find('.scoreInputLabel')[0].innerText );
 }
 function age6069uncheck(){
     ageSum = 0;
@@ -171,7 +176,7 @@ function age6069uncheck(){
     age6069.style.color = 'black';
     age6069.removeEventListener("click", age6069uncheck);
     age6069.addEventListener("click", age6069check);
-    getMortalityScore()
+    getMortalityScore();
 }
 
 age7079.addEventListener("click", age7079check);
@@ -183,6 +188,7 @@ function age7079check(){
     age7079.removeEventListener("click", age7079check);
     age7079.addEventListener("click", age7079uncheck);
     getMortalityScore()
+	updateSpanText( $('#ageSpan'), $('#age70-79').find('.scoreInputLabel')[0].innerText );
 }
 function age7079uncheck(){
     ageSum = 0;
@@ -203,6 +209,7 @@ function agemore80check(){
     agemore80.removeEventListener("click", agemore80check);
     agemore80.addEventListener("click", agemore80uncheck);
     getMortalityScore()
+	updateSpanText( $('#ageSpan'), $('#more80').find('.scoreInputLabel')[0].innerText );
 }
 function agemore80uncheck(){
     ageSum = 0;
@@ -548,12 +555,102 @@ function postData(path, params, method='post') {
 
 //postData("http://127.0.0.1:8080/myaction", {name: nhsNumber})
 
-let submitButton = document.getElementById("submitButton");
-submitButton.addEventListener('click', submitData);
+
+$(document).ready(function() {
+	
+	
+	$('#validate-button').on('click', function(e) {
+		fillValidateModal();
+		$('#confirm-submit').modal('show');
+	});
+
+	
+	
+	
+	
+	
+	
+	$('#confirm-submit').on('click', '.btn-ok', function(e) {
+		var $modalDiv = $(e.delegateTarget);
+		$modalDiv.addClass('loading');
+		
+		var postData = {
+			nhsData: nhsNumber.value,
+			nameData: name.value,
+			surnameData: surname.value,
+			dobData: dob.value,
+			ageData: ageSum,
+			sexData: sex,
+			comorboditiesData: comorbidSum,
+			respData: rrSum,
+			spo2Data: spo,
+			gcsData: gcs,
+			ureaData: ureaSum,
+			crpData: crpSum,
+			scoreData: mortalitySum+ageSum		
+		};
+		
+		$.ajax({
+			url: 'http://localhost:3000/sendDataIsaric',
+			type: "POST",
+			data: postData,
+			success: function(){
+				$modalDiv.modal('hide').removeClass('loading');
+				$('#submit-success').modal('show');
+			},
+			error: function(){
+				alert('failure');
+				$modalDiv.modal('hide').removeClass('loading');
+			}
+		});
+		
+	});
+});
+
+//The rest of the validate modal values are updated by the click event listeners above. 
+function fillValidateModal(){
+	
+	
+	updateSpanText($('#nhsNoSpan'),  nhsNumber.value);
+	updateSpanText($('#firstNameSpan'),  name.value);
+	updateSpanText($('#surnameSpan'),  surname.value);
+	
+
+	
+	updateSpanText($('#ageScoreSpan'), '+'+ageSum);
+	updateSpanText($('#sexScoreSpan'),  '+'+sex);
+	updateSpanText($('#comorbiditiesSpan'),  comorbidSum);
+	updateSpanText($('#comorbiditiesSpan'),  comorbidSum);
+	updateSpanText($('#rrSpan'),  rrSum);
+	updateSpanText($('#rrSpan'),  rrSum);
+	updateSpanText($('#spSpan'),  spo);
+	updateSpanText($('#spSpan'),  spo);
+	updateSpanText($('#gcsSpan'),  gcs);
+	updateSpanText($('#gcsSpan'),  gcs);
+	updateSpanText($('#ureaSpan'),  ureaSum);
+	updateSpanText($('#ureaSpan'),  ureaSum)
+	updateSpanText($('#crpSpan'),  crpSum);
+	updateSpanText($('#crpSpan'),  crpSum);
+	updateSpanText($('#totalScoreSpan'),  mortalitySum+ageSum);
+	updateSpanText($('#totalScoreSpan'),  mortalitySum+ageSum);
+}
+
+function updateSpanText(el, str )
+{
+	el.text(str);
+}
+
 
 function submitData(){
-    postData("http://15.161.6.195:3000/sendDataIsaric", {nhsData: nhsNumber.value,
-    nameData: name.value, surnameData: surname.value, dobData: dob.value, ageData: ageSum,
-    sexData: sex, comorboditiesData: comorbidSum, respData: rrSum, spo2Data: spo,
-    gcsData: gcs,ureaData: ureaSum, crpData: crpSum, scoreData: mortalitySum+ageSum})
+	
+
+	
+
 }
+
+// function submitData(){
+    // postData("http://15.161.6.195:3000/sendDataIsaric", {nhsData: nhsNumber.value,
+    // nameData: name.value, surnameData: surname.value, dobData: dob.value, ageData: ageSum,
+    // sexData: sex, comorboditiesData: comorbidSum, respData: rrSum, spo2Data: spo,
+    // gcsData: gcs,ureaData: ureaSum, crpData: crpSum, scoreData: mortalitySum+ageSum})
+// }

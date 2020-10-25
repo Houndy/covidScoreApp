@@ -1,7 +1,12 @@
 express = require('express');
 bodyParser = require('body-parser');
+var cors = require('cors');
 app = express();
 fs = require('fs').promises;
+
+
+
+
 async function openFile() {
   try {
     const csvHeaders = 'name,quantity,price'
@@ -35,8 +40,13 @@ async function addIsaric(nhsData, nameData, surnameData, dobData, ageData, sexDa
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(express.bodyParser());
 
+var corsOptions = {
+  origin: 'http://127.0.0.1:8887',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 // Functions to receive post requests
-app.post('/sendData', function(req, res) {
+app.post('/sendData',  cors(), function(req, res) {
   res.send('You sent "' + req.body.nameData + ' ' + req.body.surnameData + '" data.');
   (async function () {
   //await openFile();
@@ -46,7 +56,9 @@ app.post('/sendData', function(req, res) {
     })();
 });
 
-app.post('/sendDataIsaric', function(req, res) {
+
+
+app.post('/sendDataIsaric', cors(), function(req, res) {
   res.send('You sent "' + req.body.nameData + ' ' + req.body.surnameData + '" ISARIC data.');
   (async function () {
   //await openFile();

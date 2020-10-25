@@ -70,11 +70,12 @@ ageBetween6069.addEventListener("click", onAgeBetween6069check);
 ageBetween7079.addEventListener("click", onAgeBetween7079check);
 ageOver80.addEventListener("click", onAgeOver80check);
 
-submitButton.addEventListener('click', onSubmitButtonPress);
+// submitButton.addEventListener('click', onSubmitButtonPress);
 
 //Model Variables
 let ageScore = 0;
 let ageYears = 0;
+let ageText = "";
 let tachypneoa = false;
 let desaturated = false;
 let stroke = false;
@@ -85,7 +86,7 @@ let patientNhsNumber = 0;
 // Display result
 function getMortalityScore(){
     mortalityScore = ageScore + tachypneoa + desaturated + stroke + obesity;
-    resultText.innerHTML = "<p style=\"font-size:30px;margin:0px;padding:0px;\"> Score = " + (mortalityScore) + "</p> <p style=\"font-size:30px;margin:0px;padding:0px;\"> Mortality rate: " + mortality[mortalityScore] + "</p>";
+    resultText.innerHTML = "<p > Score = " + (mortalityScore) + "</p> <p> Mortality rate: " + mortality[mortalityScore] + "</p>";
 }
 
 function setButtonStyle(targetButton, isActive)
@@ -170,11 +171,13 @@ function onObesityUncheck()
 }
 
 function onAgeUnder50check(){
-    ageScore = 0;
+	ageScore = 0;
     ageYears = ageYears < 50 ? ageYears : 0;
     setDobFieldIsValid(ageYears);
     setAgeButtonStyles(ageUnder50);
     getMortalityScore();
+	ageText = $('#less50').find('.scoreInputLabel')[0].innerText;
+	updateSpanText( $('#ageSpan'), ageText );
 }
 
 function onAgeBetween5059check(){
@@ -183,6 +186,8 @@ function onAgeBetween5059check(){
     setDobFieldIsValid(ageYears);
     setAgeButtonStyles(ageBetween5059);
     getMortalityScore();
+	ageText = $('#age50-59').find('.scoreInputLabel')[0].innerText;
+	updateSpanText( $('#ageSpan'), $('#age50-59').find('.scoreInputLabel')[0].innerText );
 }
 
 function onAgeBetween6069check(){
@@ -191,6 +196,9 @@ function onAgeBetween6069check(){
     setDobFieldIsValid(ageYears);
     setAgeButtonStyles(ageBetween6069);
     getMortalityScore();
+	ageText = $('#age60-69').find('.scoreInputLabel')[0].innerText;
+	updateSpanText( $('#ageSpan'), $('#age60-69').find('.scoreInputLabel')[0].innerText );
+	
 }
 
 function onAgeBetween7079check(){
@@ -199,6 +207,8 @@ function onAgeBetween7079check(){
      setDobFieldIsValid(ageYears);
      setAgeButtonStyles(ageBetween7079);
      getMortalityScore();
+	 ageText = $('#age70-79').find('.scoreInputLabel')[0].innerText;
+	 updateSpanText( $('#ageSpan'), $('#age70-79').find('.scoreInputLabel')[0].innerText );
 }
 
 function onAgeOver80check(){
@@ -207,6 +217,8 @@ function onAgeOver80check(){
     setDobFieldIsValid(ageYears);
     setAgeButtonStyles(ageOver80);
     getMortalityScore();
+	ageText = $('#more80').find('.scoreInputLabel')[0].innerText;
+	updateSpanText( $('#ageSpan'), $('#more80').find('.scoreInputLabel')[0].innerText );
 }
 
 function onFNameChange(){
@@ -228,13 +240,22 @@ function onLNameChange(){
 }
 
 function onDobChange(){
+	
+	
+	var dobDate = new Date(dob.value);
+	var d = dobDate.getDate();
+	var m =  dobDate.getMonth();
+	m += 1;  // JavaScript months are 0-11
+	var y = dobDate.getFullYear();
+	updateSpanText( $('#dobSpan'), d + "/" + m + "/" + y );
+	
     let ageMiliseconds = Date.now() - Date.parse(dob.value);
     ageYears = Math.floor(ageMiliseconds / (3600000 * 24 *365.25));
     if      (ageYears >= 80) {onAgeOver80check();      return true;}
     else if (ageYears >= 70) {onAgeBetween7079check(); return true;}
     else if (ageYears >= 60) {onAgeBetween6069check(); return true;}
     else if (ageYears >= 50) {onAgeBetween5059check(); return true;}
-    else                     {onAgeUnder50check();     return true;}
+    else  					 {onAgeUnder50check();     return true;}
 }
 
 function setDobFieldIsValid(dobIsValid){
@@ -306,6 +327,108 @@ function nhsNumberSearch(){
     //TODO implement NHS Number Lookup
     //Do something to lookup the NHS Number
     resultText.innerHTML = "<p style=\"font-size:35px;\"> NHS number not found... " + "</p>";
+}
+
+$(document).ready(function() {
+	
+	$('#validate-button').on('click', function(e) {
+		fillValidateModal();
+		$('#confirm-submit').modal('show');
+	});
+
+	
+	$('#confirm-submit').on('click', '.btn-ok', function(e) {
+		var $modalDiv = $(e.delegateTarget);
+		$modalDiv.addClass('loading');
+		
+		var postData = {
+			nhsData:     nhsNumber.value,
+			nameData:    fName.value, 
+			surnameData: lName.value, 
+			dobData:     dob.value,
+			ageData:     ageScore,
+			respData:    tachypneoa  ? 1 : 0,
+			spo2Data:    desaturated ? 1 : 0,
+			strokeData:  stroke      ? 1 : 0,
+			obesityData: obesity     ? 1 : 0,
+			scoreData:   mortalityScore
+		};
+		
+		$.ajax({
+			url: 'http://localhost:3000/sendData',
+			type: "POST",
+			data: postData,
+			success: function(){
+				$modalDiv.modal('hide').removeClass('loading');
+				updateDischargeSummaryDivs(createDischargeSummaryText());
+				
+				$('#submit-success').modal('show');
+			},
+			error: function(){
+				alert('failure');
+				$modalDiv.modal('hide').removeClass('loading');
+			}
+		});
+		
+	});
+});
+
+//Please note age label update is done in the age event listeners at the top
+function fillValidateModal(){
+	
+	
+	updateSpanText($('#nhsNoSpan'),  nhsNumber.value);
+	updateSpanText($('#firstNameSpan'),  fName.value);
+	updateSpanText($('#surnameSpan'),  lName.value);
+	
+	updateSpanText($('#ageScoreSpan'), '+'+ageScore);
+	
+	updateSpanText($('#rrSpan'),  tachypneoa  ? 'Yes' : 'No');
+	updateSpanText($('#rrScoreSpan'),  tachypneoa  ? '+1' : '+0');
+
+	updateSpanText($('#spSpan'),  desaturated  ? 'Yes' : 'No');
+	updateSpanText($('#spScoreSpan'),  desaturated  ? '+1' : '+0');
+	
+	updateSpanText($('#strokeSpan'),  stroke  ? 'Yes' : 'No');
+	updateSpanText($('#strokeScoreSpan'),  stroke  ? '+1' : '+0');	
+
+	updateSpanText($('#obesitySpan'),  obesity  ? 'Yes' : 'No');
+	updateSpanText($('#obesityScoreSpan'),  obesity  ? '+1' : '+0');	
+	
+	updateSpanText($('#totalScoreSpan'),  '+' + mortalityScore);
+
+}
+
+function updateSpanText(el, str )
+{
+	el.text(str);
+}
+
+function updateDischargeSummaryDivs(dischargeText){
+	//Update the modal text
+	$('#modalDischargeSummaryText').text(dischargeText);
+	
+	//Update the text in results
+}
+
+function createDischargeSummaryText(){
+
+	var dischargeSummaryText = fName.value + " " + lName.value + " SOARS Score: " + mortalityScore;
+	
+	if (mortalityScore > 0) { dischargeSummaryText+= " ("};
+	if (ageScore > 0) {dischargeSummaryText += "Age: " + ageText + " (+" + ageScore + "), "};
+	if (tachypneoa) {dischargeSummaryText += "Respiratory rate >24 (+1), "}; 
+	if (desaturated) {dischargeSummaryText += "SpO2 <=92% on FiO2  0.21 (+1), "}; 
+	if (stroke) {dischargeSummaryText += "Stroke (CVA) (+1), "}; 
+	if (obesity) {dischargeSummaryText += "Obesity (BMI>30) (+1), "}; 
+	
+	
+	if (mortalityScore > 0) {
+		dischargeSummaryText = dischargeSummaryText.slice(0, -2);
+		dischargeSummaryText  += " )";
+	};
+
+	return dischargeSummaryText;	
 }
 
 function onSubmitButtonPress()

@@ -5,121 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="./index.css">
-	<link rel="stylesheet" href="./bootstrapOverride.css">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
     <title>NavTeam Covid scores</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="#">
-			<img src="./navTeam.png" alt="Nav Team" width="30" height="30" class="d-inline-block align-top" loading="lazy">
-			NavTeam development
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto">
-		  <li class="nav-item active">
-			<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-		  </li>
-		  <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  Scores
-			</a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			  <a class="dropdown-item" href="soars.html">SAORS</a>
-			  <a class="dropdown-item" href="long_score.html">Long</a>
-			  <a class="dropdown-item" href="isaric.html">ISARIC</a>
-			  <a class="dropdown-item" href="shortAndLong.html">Aggregated</a>			  
-			</div>
-		  </li>	
-		  <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  Data
-			</a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			  <a class="dropdown-item" href="https://vinnav.github.io/csv-to-html-table/">SAORS Data</a>
-			  <a class="dropdown-item" href="#">Long Score Data</a>
-			  <a class="dropdown-item" href="#">ISARIC Data</a>
-			  <a class="dropdown-item" href="#">Aggregated Data</a>			  
-			</div>
-		  </li>			  
-		  <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  Info
-			</a>
-			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			  <a class="dropdown-item" href="#">About</a>
-			  <a class="dropdown-item" href="info.html">The Team</a>
-			</div>
-		  </li>		  
-		</ul>
-		</div>
-	</nav>
-    <div class="card text-center">
-        <div class="card-header" >
+    <div class="card">
+        <div class="card-header">
+          <img src="./navTeam.png" alt="Nav Team" style="width:30px;height:30px;">
+          <h5 id="navItem">NavTeam development</h5> 
+          <h5 id="navItem">-</h5>
+          <a></a>
+          <a href="info.html"><h5 id="navItem">Info</h5></a>
+        </div>
+        <div class="card-header" style="height:100px">
           <h5 style="color:red;font-weight:800;align-self:center;">PLEASE DO NOT INPUT ANY CONFIDENTIAL NHS DATA, THIS WEBSITE IS TO BE USED FOR TESTING ONLY</h5>
         </div>
-	</div>
-	<div class="container mt-3">
-		<div class="row mt-3">
-			<div class="col-sm">
-				<div class="card border-dark mb-3 h-100" >
-					<h5 class="card-header">SOARS score</h5>	  
-					<div class="card-body">
-						<p class="card-text">Admission score</p>				  
-					</div>
-					<div class="card-footer bg-white " >
-						<a href="soars.html" class="btn btn-primary">Add SOARS</a>
-						<a href="https://vinnav.github.io/csv-to-html-table/" class="btn btn-info">View SOARS Data</a>
-					</div>						
-				</div>
-            </div>		
-
-			<div class="col-sm">
-				<div class="card border-dark mb-3 h-100" >
-				<div class="card-header h5">Long score</div>	
-				<div class="card-body">
-				  <p class="card-text">Inpatient score</p>
-				</div>
-				<div class="card-footer bg-white " >
-					<a href="long_score.html" class="btn btn-primary">Add Long Score</a>
-					<a href="#" class="btn btn-info">View Long Score Data</a>
-				</div>						
-			  </div>
-			</div>	
-		</div>			
-		<div class="row mt-3" >
-			<div class="col-sm ">
-				<div class="card border-dark mb-3 h-100" >
-					<div class="card-header h5">ISARIC score</div>		
-					<div class="card-body">
-					  <p class="card-text">International Severe Acute Respiratory and Emerging Infection Consortium.</p>
-					</div>
-					<div class="card-footer bg-white " >
-						<a href="isaric.html" class="btn btn-primary">Add ISARIC</a>
-						<a href="#" class="btn btn-info">View ISARIC Data</a>
-					</div>						
-			  </div>
-			</div>
-			<div class="col-sm">
-				<div class="card border-dark mb-3 h-100" >
-					<div class="card-header h5">Aggregated page</div>					
-					<div class="card-body">
-					  <p class="card-text">SOARS, ISARIC and Long Score</p>
-					</div>
-					<div class="card-footer bg-white " >
-						<a href="shortAndLong.html" class="btn btn-primary">Add Aggregated Score</a>
-						<a href="#" class="btn btn-info">View Agreggated Data</a>
-					</div>						
-			  </div>
-			</div>		
-		</div>	
-
-	</div> 	
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>	
+        <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">SOARS score</h5>
+                  <p class="card-text">Admission score</p>
+                  <a href="soars.html" class="btn btn-primary">SOARS</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Long score</h5>
+                  <p class="card-text">Inpatient score</p>
+                  <a href="long_score.html" class="btn btn-primary">Long score</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">ISARIC score</h5>
+                  <p class="card-text">International Severe Acute Respiratory and Emerging Infection Consortium.</p>
+                  <a href="isaric.html" class="btn btn-primary">ISARIC</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Aggregated page</h5>
+                  <p class="card-text">SOARS, ISARIC and Long Score</p>
+                  <a href="shortAndLong.html" class="btn btn-primary">Aggregated</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Data spreadsheet</h5>
+                  <p class="card-text">SOARS data spreadsheet</p>
+                  <a href="https://vinnav.github.io/csv-to-html-table/" class="btn btn-info">Spreadsheet</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      </div>
 </body>
 </html>

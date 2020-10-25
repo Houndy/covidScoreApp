@@ -100,19 +100,19 @@
         </div>
         <div class="selectAge">
           <div id="less50">
-            &nbsp&lt;50 0 &nbsp
+            <span class="scoreInputLabel">&nbsp&lt;50</span> (+0) &nbsp
           </div>
           <div id="age50-59">
-            50-59 +2
+            <span class="scoreInputLabel">50-59</span> (+2)
           </div>
           <div id="age60-69">
-            &nbsp60-69 +4&nbsp
+            <span class="scoreInputLabel">&nbsp60-69</span> (+4)&nbsp
           </div>
           <div id="age70-79">
-            &nbsp70-79 +6&nbsp
+            <span class="scoreInputLabel">&nbsp70-79</span> (+6)&nbsp
           </div>
           <div id="more80">
-            &nbsp&gt;80 +7&nbsp
+           <span class="scoreInputLabel"> &nbsp&gt;80</span> (+7)&nbsp
           </div>
         </div>
       </div>
@@ -122,10 +122,10 @@
         </div>
         <div class="yesno">
           <div id="femaleSex">
-            &nbspFemale 0 &nbsp
+           <span class="scoreInputLabel"> &nbspFemale</span> (+0) &nbsp
           </div>
           <div id="maleSex">
-            &nbspMale +1
+            <span class="scoreInputLabel">&nbspMale</span> (+1)
           </div>
         </div>
       </div>
@@ -228,11 +228,162 @@
         <div id="resultText">
         </div>
       </div>
-      <button id="submitButton">Submit Here</button>
+	  
+		<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title" id="myModalLabel">Confirm Submit</h4>
+					</div>
+					<div class="modal-body">
+						<div class="container">
+							<div class="row">
+								<p>You are about to submit this record, this procedure is irreversible.</p>
+							</div>
+							<div class="row">
+								<h5>Patient Details </h5>
+							</div>
+							<div class="row">
+								<div class="col-sm">
+									NHS Number: <span id="nhsNoSpan"></span>
+								</div>
+								<div class="col-sm">
+									Full Name: <span id="firstNameSpan"></span> <span id="surnameSpan"></span>
+								</div>								
+							</div>
+							<div class="row">
+								<div class="col-sm">
+									D.O.B.: <span id="dobSpan"></span>
+								</div>
+								<div class="col-sm">
+									Sex: <span id="sexSpan1">Female</span>
+								</div>								
+							</div>
+							<div class="row">
+								<h5>Score </h5>
+							</div>
+							<div class="row">
+								<div class="col-sm">
+									Age: <span id="ageSpan"></span>
+								</div>
+								<div class="col-sm">
+									<span id="ageScoreSpan">+0</span>
+								</div>								
+							</div>	
+							<div class="row">							
+								<div class="col-sm">
+									Sex: <span id="sexSpan2">Female</span>
+								</div>
+								<div class="col-sm">
+									<span id="sexScoreSpan">+0</span>
+								</div>								
+							</div>		
+							<div class="row">							
+								<div class="col-sm">
+									Comorbidities: <span id="comorbiditiesSpan"></span>
+								</div>
+								<div class="col-sm">
+									<span id="comorbiditiesScoreSpan">+0</span>
+								</div>								
+							</div>	
+							<div class="row">							
+								<div class="col-sm">
+									Respiratory Rate: <span id="rrSpan"></span>
+								</div>
+								<div class="col-sm">
+									<span id="rrScoreSpan">+0</span>
+								</div>								
+							</div>							
+							<div class="row">							
+								<div class="col-sm">
+									SpO<sub>2</sub> (<=92% on FiO<sub>2</sub>&nbsp; 0.21): <span id="spSpan"></span>
+								</div>
+								<div class="col-sm">
+									<span id="spScoreSpan">+0</span>
+								</div>								
+							</div>		
+							<div class="row">							
+								<div class="col-sm">
+									GCS &lt;15: <span id="gcsSpan"></span>
+								</div>
+								<div class="col-sm">
+									<span id="gcsScoreSpan">+0</span>
+								</div>								
+							</div>								
+							<div class="row">							
+								<div class="col-sm">
+									Urea: <span id="ureaSpan"></span>
+								</div>
+								<div class="col-sm">
+									<span id="ureaScoreSpan">+0</span>
+								</div>								
+							</div>
+							<div class="row">							
+								<div class="col-sm">
+									CRP: <span id="crpSpan"></span>
+								</div>
+								<div class="col-sm">
+									<span id="crpScoreSpan">+0</span>
+								</div>								
+							</div>							
+							<div class="row">							
+								<div class="col-sm">
+									<u><h6>Total:</h6></u>
+								</div>
+								<div class="col-sm">
+									<u><h6><span id="totalScoreSpan">+0</span></h6></u>
+								</div>								
+							</div>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-danger btn-ok">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<button class="btn btn-default" id="validate-button" >
+			Validate Here
+		</button>
+		
+  		
+		
+		<div class="modal fade" id="submit-success" tabindex="-1" role="dialog" aria-labelledby="myModalLabelSuccess" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title" id="myModalLabelSuccess">Successfully Submitted!</h4>
+					</div>
+					<div class="modal-body">
+						<p>Submission Success.</p>
+						<p>Copy and paste into discharge summary:</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>	  		
+		
     </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>	
+	
+	
+
+
+
+
+	
+	
+	
+	
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>	
   	
   </body>
   <script src="isaric.js"></script>
